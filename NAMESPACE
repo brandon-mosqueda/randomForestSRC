@@ -76,7 +76,9 @@ export(extract.bootsample,
        var.select,
        var.select.rfsrc,
        vimp,
-       vimp.rfsrc)
+       vimp.rfsrc,
+
+       brandon)
 
 
 S3method(max, subtree)
