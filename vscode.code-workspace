@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../../Desktop/Notes"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"*.RData": true,
+			"*.pdf": true,
+			"*.xlsx": true
+		}
+	}
+}
