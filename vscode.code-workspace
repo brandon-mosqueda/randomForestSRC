@@ -1,10 +1,12 @@
 {
 	"folders": [
 		{
-			"path": "../../Desktop/Notes"
+			"name": "randomForestSRC",
+			"path": "."
 		},
 		{
-			"path": "."
+			"name": "Notes",
+			"path": "../../Desktop/Notes"
 		}
 	],
 	"settings": {

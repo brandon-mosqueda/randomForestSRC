@@ -78,7 +78,9 @@ export(extract.bootsample,
        vimp,
        vimp.rfsrc,
 
-       brandon)
+       zap.rfsrc,
+       predict.zap.rfsrc,
+       cholesky)
 
 
 S3method(max, subtree)
