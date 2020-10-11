@@ -133,3 +133,8 @@ cholesky <- function(G, tolerance = 1e-10) {
 
   return(X)
 }
+
+#' @title Mean square error of prediction
+mse <- function(actual, predicted) {
+  return(mean((actual - predicted)^2, na.rm=TRUE))
+}

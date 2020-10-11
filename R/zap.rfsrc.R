@@ -8,11 +8,9 @@ zap.rfsrc <- function(X, y,
                       mtry_lambda = ncol(X) / 3,
                       nodesize_lambda = 5,
                       importance = FALSE) {
-  if (!all(is_discrete(y))) {
-    stop("ZAP random forest only can be used with discrete data")
-  } else if (nrow(X) != length(y)) {
-    stop("X must have the same number of rows that elements in y")
-  }
+  validate_zap_params(X, y, ntree_theta, mtry_theta,
+                      nodesize_theta, ntree_lambda, mtry_lambda,
+                      nodesize_lambda, importance)
 
   zeros_percentaje <- round(sum(y == 0) / length(y) * 100, 1)
 

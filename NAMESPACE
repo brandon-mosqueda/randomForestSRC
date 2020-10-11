@@ -80,7 +80,8 @@ export(extract.bootsample,
 
        zap.rfsrc,
        predict.zap.rfsrc,
-       cholesky)
+       cholesky,
+       mse)
 
 
 S3method(max, subtree)

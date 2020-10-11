@@ -7,7 +7,7 @@ Author: Hemant Ishwaran <hemant.ishwaran@gmail.com>, Udaya B. Kogalur <ubk@kogal
 Maintainer: Udaya B. Kogalur <ubk@kogalur.com>
 BugReports: https://github.com/kogalur/randomForestSRC/issues/new
 Depends: R (>= 3.5.0),
-Imports: parallel
+Imports: parallel, checkmate, dplyr
 Suggests: survival, pec, prodlim, mlbench, akima, caret, imbalance
 Description: Fast OpenMP parallel computing of Breiman's random forests for survival, competing risks, regression and classification based on Ishwaran and Kogalur's popular random survival forests (RSF) package.  Handles missing data and now includes multivariate, unsupervised forests, quantile regression and solutions for class imbalanced data.  New fast interface using subsampling and confidence regions for variable importance.
 License: GPL (>= 3)
