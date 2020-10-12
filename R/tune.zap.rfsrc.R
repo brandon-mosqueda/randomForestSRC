@@ -6,13 +6,14 @@ tune.zap.rfsrc <- function(X, y,
                            mtry_lambda = NULL,
                            nodesize_lambda = c(5, 15),
                            type = "original",
+                           importance = FALSE,
                            loss_function = mse,
+
                            cross_validation = "k_fold",
                            number_of_folds = 5,
                            proportion_of_testing = 0.2,
                            sample_proportion = 1,
-                           verbose = TRUE,
-                           importance = FALSE) {
+                           verbose = TRUE) {
 
   validate_tune_zap_params(X, y, ntree_theta, mtry_theta,
                            nodesize_theta, ntree_lambda,
@@ -50,19 +51,21 @@ tune.zap.rfsrc <- function(X, y,
   Combinations <- data.frame()
   n_combinations <- length(all_combinations)
 
-  if (verbose) {
+  if (verbose && n_combinations > 1) {
     cat("\tTotal combinations: ", n_combinations, "\n")
   }
 
   for (i in 1:n_combinations) {
-    if (verbose) {
+    if (verbose && n_combinations > 1) {
       cat("\t\tCombination:", i, "/", n_combinations, "\n")
     }
     flags <- all_combinations[[i]]
 
     inner_losses <- c()
     for (j in 1:n_folds) {
-      cat("\t\t\tFold:", j, "/", n_folds, "\n")
+      if (verbose && n_combinations > 1) {
+        cat("\t\t\tFold:", j, "/", n_folds, "\n")
+      }
       fold <- folds[[j]]
 
       X_training <- X[fold$training, ]

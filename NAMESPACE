@@ -84,7 +84,8 @@ export(extract.bootsample,
        cholesky,
        mse,
        tune.zap.rfsrc,
-       predict.tune.zap.rfsrc)
+       predict.tune.zap.rfsrc,
+       gene.zap.rfsrc)
 
 
 S3method(max, subtree)

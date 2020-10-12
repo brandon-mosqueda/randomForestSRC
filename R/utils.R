@@ -72,7 +72,7 @@ cholesky <- function(G, tolerance = 1e-10) {
   return(result)
 }
 
-.prepare_X_with_markers <- function(Pheno, Geno, with_interaction, is_uni_env) {
+prepare_X_with_markers <- function(Pheno, Geno, with_interaction, is_uni_env) {
   ZG <- model.matrix(~0 + as.factor(Pheno$Line))
   ZG1 <- ZG %*% Geno
   X <- ZG1
@@ -93,8 +93,8 @@ cholesky <- function(G, tolerance = 1e-10) {
   return(X)
 }
 
-.prepare_X_without_markers <- function(Pheno, Geno, with_interaction,
-                                       is_uni_env) {
+prepare_X_without_markers <- function(Pheno, Geno, with_interaction,
+                                      is_uni_env) {
   # Of lines
   ZG <- model.matrix(~0 + as.factor(Pheno$Line))
 
@@ -119,15 +119,15 @@ cholesky <- function(G, tolerance = 1e-10) {
   return(X)
 }
 
-.prepare_X <- function(Pheno, Geno, with_markers, with_interaction,
-                       is_uni_env) {
+prepare_X <- function(Pheno, Geno, with_markers, with_interaction,
+                      is_uni_env) {
   if (with_markers) {
     X <- .prepare_X_with_markers(Pheno, Geno, with_interaction, is_uni_env)
   } else {
     X <- .prepare_X_without_markers(Pheno, Geno, with_interaction, is_uni_env)
   }
 
-  X <- as.matrix(X)
+  X <- as.data.frame(X)
   colnames(X) <- make.names(colnames(X))
   rownames(X) <- make.names(rownames(X))
 
@@ -196,4 +196,18 @@ get_combinations <- function(ntree_theta, mtry_theta,
 
 get_function_name <- function(funct) {
   return(make.names(as.character(substitute(funct))))
+}
+
+get_rand_state <- function() {
+  # Using `get0()` here to have `NULL` output in case object doesn't
+  # exist. Also using `inherits = FALSE` to get value exactly from
+  # global environment and not from one of its parent.
+  get0(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+}
+
+set_rand_state <- function(state) {
+  # Assigning `NULL` state might lead to unwanted consequences
+  if (!is.null(state)) {
+    assign(".Random.seed", state, envir = .GlobalEnv, inherits = FALSE)
+  }
 }
