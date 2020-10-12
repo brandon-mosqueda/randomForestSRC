@@ -11,14 +11,15 @@ tune.zap.rfsrc <- function(X, y,
                            number_of_folds = 5,
                            proportion_of_testing = 0.2,
                            sample_proportion = 1,
-                           verbose = TRUE) {
+                           verbose = TRUE,
+                           importance = FALSE) {
 
   validate_tune_zap_params(X, y, ntree_theta, mtry_theta,
                            nodesize_theta, ntree_lambda,
                            mtry_lambda, nodesize_lambda,
                            loss_function, cross_validation,
                            number_of_folds, proportion_of_testing,
-                           sample_proportion, type)
+                           sample_proportion, type, importance)
 
   mtry <- floor(ncol(X) / 3)
   default_mtry <- c(ceiling(mtry / 2), mtry, mtry + ceiling(mtry / 2))
@@ -87,10 +88,26 @@ tune.zap.rfsrc <- function(X, y,
     Combinations <- rbind(Combinations, as.data.frame(flags))
   }
 
-  results <- list(combinations = Combinations)
-
+  model <- list(combinations = Combinations)
   index_best_params <- which.min(Combinations[[loss_name]])
-  results$best_params <- as.list(Combinations[index_best_params, ])
+  model$best_params <- as.list(Combinations[index_best_params, ])
 
-  return(results)
+  model$zap_fitted_model <- suppressWarnings(zap.rfsrc(
+    X, y,
+    importance = importance,
+    ntree_theta = model$best_params$ntree_theta,
+    mtry_theta = model$best_params$mtry_theta,
+    nodesize_theta = model$best_params$nodesize_theta,
+    ntree_lambda = model$best_params$ntree_lambda,
+    mtry_lambda = model$best_params$mtry_lambda,
+    nodesize_lambda = model$best_params$nodesize_lambda
+  ))
+
+  model <- structure(model, class = "tune.zap.rfsrc")
+
+  return(model)
+}
+
+predict.tune.zap.rfsrc <- function(model, X) {
+  return(predict(model$zap_fitted_model, X, type = model$best_params$type))
 }

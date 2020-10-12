@@ -26,7 +26,7 @@ validate_tune_zap_params <- function(X, y, ntree_theta, mtry_theta,
                                      mtry_lambda, nodesize_lambda,
                                      loss_function, cross_validation,
                                      number_of_folds, proportion_of_testing,
-                                     sample_proportion, type) {
+                                     sample_proportion, type, importance) {
   expect_data_frame(X)
   expect_numeric(y)
 
@@ -61,4 +61,6 @@ validate_tune_zap_params <- function(X, y, ntree_theta, mtry_theta,
   expect_character(type)
   type <- tolower(type)
   expect_subset(type, c("original", "custom"))
+
+  expect_logical(importance, len = 1)
 }
