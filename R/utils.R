@@ -160,7 +160,7 @@ get_folds <- function(cross_validation, number_of_folds,
   } else if (cross_validation == "random_partition") {
     temp_folds <- replicate(number_of_folds,
                             sample(n_records,
-                                   proportion_of_testing * n_records))
+                                   ceiling(proportion_of_testing * n_records)))
 
     for (fold_num in 1:number_of_folds) {
       current_fold <- list(testing=temp_folds[, fold_num])
@@ -189,7 +189,7 @@ get_combinations <- function(ntree_theta, mtry_theta,
 
   n_combinations <- length(all_params_combinations)
   final_combinations <- sample(n_combinations,
-                               n_combinations * sample_proportion)
+                               ceiling(n_combinations * sample_proportion))
 
   return(all_params_combinations[final_combinations])
 }
