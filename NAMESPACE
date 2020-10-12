@@ -1,6 +1,7 @@
 useDynLib(randomForestSRC, .registration = TRUE)
 
 importFrom("parallel", mclapply)
+importFrom("purrr", "cross")
 importFrom("graphics", "abline", "axis", "box", "boxplot", "bxp",
            "legend", "lines", "matlines", "matplot", "mtext", "par", "plot",
            "plot.new", "plot.window", "points", "rug", "segments",

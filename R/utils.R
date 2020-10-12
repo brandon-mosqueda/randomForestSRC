@@ -99,7 +99,7 @@ cholesky <- function(G, tolerance = 1e-10) {
   ZG <- model.matrix(~0 + as.factor(Pheno$Line))
 
   # Creating the linear kernel of lines for RKHS
-  ZL <- get_cholesky(Geno)
+  ZL <- cholesky(Geno)
   ZG1 <- ZG %*% ZL
   X <- ZG1
 
@@ -137,4 +137,63 @@ cholesky <- function(G, tolerance = 1e-10) {
 #' @title Mean square error of prediction
 mse <- function(actual, predicted) {
   return(mean((actual - predicted)^2, na.rm=TRUE))
+}
+
+get_folds <- function(cross_validation, number_of_folds,
+                      proportion_of_testing, n_records) {
+  folds <- list()
+
+  if (cross_validation == "k_fold") {
+      folds_vector <- findInterval(cut(sample(1:n_records, n_records),
+                                       breaks=number_of_folds), 1:n_records)
+
+      for (fold_num in 1:number_of_folds) {
+        current_fold <- list()
+        current_fold$testing <- which(folds_vector == fold_num)
+        current_fold$training <- setdiff(1:n_records, current_fold$testing)
+
+        folds[[fold_num]] <- current_fold
+      }
+
+      return(folds)
+
+  } else if (cross_validation == "random_partition") {
+    temp_folds <- replicate(number_of_folds,
+                            sample(n_records,
+                                   proportion_of_testing * n_records))
+
+    for (fold_num in 1:number_of_folds) {
+      current_fold <- list(testing=temp_folds[, fold_num])
+      current_fold$training <- setdiff(1:n_records, current_fold$testing)
+
+      folds[[fold_num]] <- current_fold
+    }
+  }
+
+  return(folds)
+}
+
+get_combinations <- function(ntree_theta, mtry_theta,
+                             nodesize_theta, ntree_lambda,
+                             mtry_lambda, nodesize_lambda,
+                             sample_proportion, type) {
+  FLAGS <- list(ntree_theta = ntree_theta, mtry_theta = mtry_theta,
+                nodesize_theta = nodesize_theta, ntree_lambda = ntree_lambda,
+                mtry_lambda = mtry_lambda, nodesize_lambda = nodesize_lambda,
+                type = type)
+  all_params_combinations <- FLAGS %>% cross()
+
+  if (sample_proportion == 1) {
+    return(all_params_combinations)
+  }
+
+  n_combinations <- length(all_params_combinations)
+  final_combinations <- sample(n_combinations,
+                               n_combinations * sample_proportion)
+
+  return(all_params_combinations[final_combinations])
+}
+
+get_function_name <- function(funct) {
+  return(make.names(as.character(substitute(funct))))
 }

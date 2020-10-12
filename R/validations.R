@@ -10,13 +10,13 @@ validate_zap_params <- function(X, y, ntree_theta, mtry_theta,
     stop("X must have the same number of rows that elements in y")
   }
 
-  expect_int(ntree_theta, lower = 1)
-  expect_int(mtry_theta, lower = 1)
-  expect_int(nodesize_theta, lower = 1)
+  expect_number(ntree_theta, lower = 1)
+  expect_number(mtry_theta, lower = 1, null.ok = TRUE)
+  expect_number(nodesize_theta, lower = 1)
 
-  expect_int(ntree_lambda, lower = 1)
-  expect_int(mtry_lambda, lower = 1)
-  expect_int(nodesize_lambda, lower = 1)
+  expect_number(ntree_lambda, lower = 1)
+  expect_number(mtry_lambda, lower = 1, null.ok = TRUE)
+  expect_number(nodesize_lambda, lower = 1)
 
   expect_logical(importance)
 }
@@ -25,7 +25,8 @@ validate_tune_zap_params <- function(X, y, ntree_theta, mtry_theta,
                                      nodesize_theta, ntree_lambda,
                                      mtry_lambda, nodesize_lambda,
                                      loss_function, cross_validation,
-                                     number_of_folds, proportion_of_testing) {
+                                     number_of_folds, proportion_of_testing,
+                                     sample_proportion, type) {
   expect_data_frame(X)
   expect_numeric(y)
 
@@ -43,8 +44,6 @@ validate_tune_zap_params <- function(X, y, ntree_theta, mtry_theta,
   expect_numeric(mtry_lambda, lower = 1, null.ok = TRUE)
   expect_numeric(nodesize_lambda, lower = 1)
 
-  expect_logical(importance)
-
   expect_function(loss_function)
 
   expect_string(cross_validation)
@@ -56,4 +55,10 @@ validate_tune_zap_params <- function(X, y, ntree_theta, mtry_theta,
     expect_int(number_of_folds, lower = 1)
     expect_numeric(proportion_of_testing, lower = 0.01, upper = 0.99)
   }
+
+  expect_numeric(sample_proportion, lower = 0.01, upper = 1)
+
+  expect_character(type)
+  type <- tolower(type)
+  expect_subset(type, c("original", "custom"))
 }
