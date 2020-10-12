@@ -112,7 +112,7 @@ validate_gene_zap_params <- function(
   cross_validation, number_of_folds, proportion_of_testing,
   type_of_tuning, tuning_cross_validation, tuning_number_of_folds,
   tuning_proportion_of_testing, sample_proportion,
-  results_dir, verbose, digits) {
+  results_dir, verbose, digits, seed) {
   expect_int(digits, lower = 1)
   expect_number(seed, null.ok = TRUE)
   expect_logical(verbose, len = 1)
@@ -129,7 +129,7 @@ validate_gene_zap_params <- function(
   expect_cross_validation(cross_validation, number_of_folds,
                           proportion_of_testing)
 
-  validate_tune_zap_params(Geno, y, ntree_theta, mtry_theta=1,
+  validate_tune_zap_params(Pheno, y, ntree_theta, mtry_theta=1,
                            nodesize_theta, ntree_lambda,
                            mtry_lambda=1, nodesize_lambda,
                            loss_function, tuning_cross_validation,

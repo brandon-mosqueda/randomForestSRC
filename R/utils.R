@@ -63,7 +63,7 @@ cholesky <- function(G, tolerance = 1e-10) {
         LG <- (V_A_Star %*% sqrt(d_A_Star))
       }
 
-      result <<- LG
+      result <- LG
   })
 
   rownames(result) <- data_names
@@ -122,9 +122,9 @@ prepare_X_without_markers <- function(Pheno, Geno, with_interaction,
 prepare_X <- function(Pheno, Geno, with_markers, with_interaction,
                       is_uni_env) {
   if (with_markers) {
-    X <- .prepare_X_with_markers(Pheno, Geno, with_interaction, is_uni_env)
+    X <- prepare_X_with_markers(Pheno, Geno, with_interaction, is_uni_env)
   } else {
-    X <- .prepare_X_without_markers(Pheno, Geno, with_interaction, is_uni_env)
+    X <- prepare_X_without_markers(Pheno, Geno, with_interaction, is_uni_env)
   }
 
   X <- as.data.frame(X)
