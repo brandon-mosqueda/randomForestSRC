@@ -277,34 +277,34 @@ train_gen_zap <- function(Pheno, y, Geno,
   return(Results)
 }
 
-gene.zap.rfsrc <- function(Pheno, y, Geno = NULL, Markers = NULL,
-                           with_interaction = TRUE,
-                           mult_env_anal = TRUE,
+cv.zap.rf <- function(Pheno, Geno = NULL, Markers = NULL,
+                      with_interaction = TRUE,
+                      mult_env_anal = TRUE,
 
-                           ntree_theta = c(500),
-                           mtry_theta = NULL,
-                           nodesize_theta = c(5),
-                           ntree_lambda = c(500),
-                           mtry_lambda = NULL,
-                           nodesize_lambda = c(5),
-                           importance = FALSE,
-                           type = "original",
-                           loss_function = mse,
+                      ntree_theta = c(500),
+                      mtry_theta = NULL,
+                      nodesize_theta = c(5),
+                      ntree_lambda = c(500),
+                      mtry_lambda = NULL,
+                      nodesize_lambda = c(5),
+                      importance = FALSE,
+                      type = "original",
+                      loss_function = mse,
 
-                           cross_validation = "k_fold",
-                           number_of_folds = 5,
-                           proportion_of_testing = 0.2,
+                      cross_validation = "k_fold",
+                      number_of_folds = 5,
+                      proportion_of_testing = 0.2,
 
-                           type_of_tuning = "global",
-                           tuning_cross_validation = "k_fold",
-                           tuning_number_of_folds = 5,
-                           tuning_proportion_of_testing = 0.2,
-                           sample_proportion = 1,
+                      type_of_tuning = "global",
+                      tuning_cross_validation = "k_fold",
+                      tuning_number_of_folds = 5,
+                      tuning_proportion_of_testing = 0.2,
+                      sample_proportion = 1,
 
-                           digits = 4,
-                           seed = NULL,
-                           results_dir = "gene_zap_random_forest_results",
-                           verbose = TRUE) {
+                      digits = 4,
+                      seed = NULL,
+                      results_dir = "gene_zap_random_forest_results",
+                      verbose = TRUE) {
   old_state <- NULL
   if (!is.null(seed)) {
     old_state <- get_rand_state()
@@ -315,7 +315,7 @@ gene.zap.rfsrc <- function(Pheno, y, Geno = NULL, Markers = NULL,
   on.exit(set_rand_state(old_state))
 
   validate_gene_zap_params(
-    Pheno, y, Geno, Markers, with_interaction, mult_env_anal,
+    Pheno, Geno, Markers, with_interaction, mult_env_anal,
     ntree_theta, mtry_theta, nodesize_theta,
     ntree_lambda, mtry_lambda, nodesize_lambda,
     importance, type, loss_function,
@@ -323,6 +323,8 @@ gene.zap.rfsrc <- function(Pheno, y, Geno = NULL, Markers = NULL,
     type_of_tuning, tuning_cross_validation, tuning_number_of_folds,
     tuning_proportion_of_testing, sample_proportion,
     results_dir, verbose, digits, seed)
+
+  y <- Pheno$Response
 
   with_markers <- !is.null(Markers)
   if (is.null(Geno)) {

@@ -13,11 +13,11 @@ expect_cross_validation <- function(cross_validation, number_of_folds,
 }
 
 expect_pheno <- function(Pheno) {
-  expect_data_frame(Pheno, min.cols = 2)
-  expect_subset(c("Line", "Env"), colnames(Pheno),
+  expect_data_frame(Pheno, min.cols = 3)
+  expect_subset(c("Line", "Env", "Response"), colnames(Pheno),
                 empty.ok = FALSE,
                 label = "Pheno",
-                info = "Pheno does not contain Line, Hybrid_Name and/or Env column(s)")
+                info = "Pheno does not contain Line, Env and/or Response column(s)")
 }
 
 expect_geno <- function(Geno, Markers) {
@@ -105,7 +105,7 @@ validate_tune_zap_params <- function(X, y, ntree_theta, mtry_theta,
 }
 
 validate_gene_zap_params <- function(
-  Pheno, y, Geno, Markers, with_interaction, mult_env_anal,
+  Pheno, Geno, Markers, with_interaction, mult_env_anal,
   ntree_theta, mtry_theta, nodesize_theta,
   ntree_lambda, mtry_lambda, nodesize_lambda,
   importance, type, loss_function,
@@ -129,6 +129,7 @@ validate_gene_zap_params <- function(
   expect_cross_validation(cross_validation, number_of_folds,
                           proportion_of_testing)
 
+  y <- Pheno$Response
   validate_tune_zap_params(Pheno, y, ntree_theta, mtry_theta=1,
                            nodesize_theta, ntree_lambda,
                            mtry_lambda=1, nodesize_lambda,

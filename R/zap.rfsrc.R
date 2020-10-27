@@ -1,5 +1,35 @@
 g <- function(x, y) x / (1 - exp(-x)) - y
 
+#' @title Zero Altered Poisson (ZAP) ranfom forest
+#'
+#' @description
+#' Train a Zero Altered Poisson (ZAP) ranfom forest model. It only works for
+#' count data and it is recommended to use when such data has an excess of
+#' zeros.
+#'
+#' @param X (\code{matrix} or \code{data.frame}) The predictors.
+#' @param y (\code{numeric}) The count response variable.
+#' @param ntree_theta (\code{numeric}) The number of trees used to train the
+#'        binary random forest model. 500 by default.
+#' @param mtry_theta (\code{numeric}) The number of independent variables that
+#'        are going to be sampled in each iteration used to train the binary
+#'        random forest model. ncol(X) / 3 by default.
+#' @param nodesize_theta (\code{numeric}) The number of samples in the final
+#'        nodes used to train the binary random forest model. 5 by default.
+#' @param ntree_lambda (\code{numeric}) The number of trees used to train the
+#'        numeric random forest model. 500 by default.
+#' @param mtry_lambda (\code{numeric}) The number of independent variables that
+#'        are going to be sampled in each iteration used to train the numeric
+#'        random forest model. ncol(X) / 3 by default.
+#' @param nodesize_lambda (\code{numeric}) The number of samples in the final
+#'        nodes used to train the numeric random forest model. 5 by default.
+#' @param importance (\code{logical}) A flag indicating if the importance of
+#'        predictors have to be assessed.
+#'
+#' @return An object with S3 class "zap.rfsrc" which is a list with the both
+#'         fitted random forest model theta_forest and lambda_forest.
+#' @examples
+#' }
 zap.rfsrc <- function(X, y,
                       ntree_theta = 500,
                       mtry_theta = ncol(X) / 3,
