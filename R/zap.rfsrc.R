@@ -1,6 +1,6 @@
 g <- function(x, y) x / (1 - exp(-x)) - y
 
-#' @title Zero Altered Poisson (ZAP) ranfom forest
+#' @title Zero Altered Poisson (ZAP) random forest
 #'
 #' @description
 #' Train a Zero Altered Poisson (ZAP) ranfom forest model. It only works for
@@ -26,9 +26,19 @@ g <- function(x, y) x / (1 - exp(-x)) - y
 #' @param importance (\code{logical}) A flag indicating if the importance of
 #'        predictors have to be assessed.
 #'
-#' @return An object with S3 class "zap.rfsrc" which is a list with the both
-#'         fitted random forest model theta_forest and lambda_forest.
+#' @return An object of S3 class "zap.rfsrc" which is a list with the both
+#'         fitted random forest models theta_forest and lambda_forest.
 #' @examples
+#' \dontrun{
+#' y <- rpois(nrow(new_iris), 10)
+#' y[sample(nrow(new_iris), nrow(new_iris) * 0.2)] <- 0
+#' X <- iris[, 1:4]
+#'
+#' model <- zap.rfsrc(X, y,
+#'                    ntree_lambda=600, mtry_lambda=4, nodesize_lambda=8,
+#'                    ntree_theta=600, mtry_theta=4, nodesize_theta=8)
+#' predictions <- predict(model, X)$
+#' predictions$predicted
 #' }
 zap.rfsrc <- function(X, y,
                       ntree_theta = 500,
@@ -50,7 +60,7 @@ zap.rfsrc <- function(X, y,
             "best option.")
   }
 
-  Data <- as.data.frame(X)
+  Data <- data.frame(X)
   predictors <- colnames(Data)
   Data$y <- y
   Data$y0 <- Data$y == 0
